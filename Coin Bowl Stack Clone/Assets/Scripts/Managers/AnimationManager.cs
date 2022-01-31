@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CompanyName.GameName.Enums;
+using Coati.CoinBowlStack.Enums;
 
 public class AnimationManager : MonoBehaviour
 {
@@ -58,6 +58,11 @@ public class AnimationManager : MonoBehaviour
     }
 
     private void AddToHorizontal(float value) => _currentHorizontal += value;
+
+    public void ActivateAnimation_PushedBack()
+    {
+
+    }
 
     #endregion // ActivateAnimation
 

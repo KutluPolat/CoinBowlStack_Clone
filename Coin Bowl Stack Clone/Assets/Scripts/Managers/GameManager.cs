@@ -34,20 +34,20 @@ public class GameManager : MonoBehaviour
 
     #region Level Elements
 
-    [TabGroup("Level Elements", "GameObjects"), InlineEditor(InlineEditorModes.LargePreview), SceneObjectsOnly]
+    [TabGroup("Elements", "GameObject"), InlineEditor(InlineEditorModes.LargePreview), SceneObjectsOnly]
     public GameObject Player;
 
-    [TabGroup("Level Elements", "Animators"), SceneObjectsOnly]
+    [TabGroup("Elements", "Animators"), SceneObjectsOnly]
     public Animator CameraAnimator, PlayerAnimator;
 
-    [TabGroup("Level Elements", "Rigidbodies"), SceneObjectsOnly]
-    public Rigidbody PlayerRigidbody;
+    [TabGroup("Elements", "CharacterController"), SceneObjectsOnly]
+    public CharacterController PlayerCharacterController;
 
     #endregion // Level Elements
 
     #region Script Holders
 
-    [BoxGroup("Script Holders"), SceneObjectsOnly, ShowInInspector]
+    [BoxGroup("Script Holders"), SceneObjectsOnly, SerializeField]
     private GameObject _managerHolder, _controllerHolder;
 
     #endregion // Script Holders
@@ -62,10 +62,20 @@ public class GameManager : MonoBehaviour
      * 5-) Instantiate it in InitializeManagers() method.
      * 6-) Assign that prefab on created variable.
      */
-    [BoxGroup("Managers"), AssetsOnly, ShowInInspector]
+    [BoxGroup("Managers"), AssetsOnly, SerializeField]
     private GameObject _animationManager, _levelManager, _eventManager, _sfxManager;
 
     #endregion // Manager Prefabs
+
+    #region Controllers
+
+    [BoxGroup("Controllers"), SceneObjectsOnly]
+    public MovementController MovementController;
+
+    [BoxGroup("Controllers"), SceneObjectsOnly]
+    public InputController InputController;
+
+    #endregion // Controllers
 
     #endregion // Variables
 
@@ -90,7 +100,8 @@ public class GameManager : MonoBehaviour
 
     private void InitializeControllers()
     {
-
+        MovementController.SubscribeEvents();
+        //InputController.SubscribeEvents();
     }
 
     #endregion // Initializations.

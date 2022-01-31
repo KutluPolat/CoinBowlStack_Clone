@@ -26,6 +26,8 @@ public class EventManager : MonoBehaviour
 
     public delegate void Buttons();
     public delegate void States();
+    public delegate void InputHandler(float horizontalInputValue);
+    public delegate void Hit();
 
     #endregion // Delegates
 
@@ -33,6 +35,8 @@ public class EventManager : MonoBehaviour
 
     public event Buttons PressedRestart, PressedNextLevel;
     public event States StateTapToPlay, StateInGame, StateEndingSequance, StateLevelEnd;
+    public event InputHandler InputHandled;
+    public event Hit PlayerHitObstacle;
 
     #endregion // Events
 
@@ -44,7 +48,7 @@ public class EventManager : MonoBehaviour
         {
             PressedRestart();
 
-            Debug.Log("OnPressedRestart triggered.");
+            Debug.Log("PressedRestart triggered.");
         }
     }
 
@@ -54,7 +58,7 @@ public class EventManager : MonoBehaviour
         {
             PressedNextLevel();
 
-            Debug.Log("OnPressedNextLevel triggered.");
+            Debug.Log("PressedNextLevel triggered.");
         }
     }
 
@@ -64,7 +68,7 @@ public class EventManager : MonoBehaviour
         {
             StateTapToPlay();
 
-            Debug.Log("OnTapToPlay triggered.");
+            Debug.Log("StateTapToPlay triggered.");
         }
     }
 
@@ -73,7 +77,7 @@ public class EventManager : MonoBehaviour
         if (StateInGame != null)
         {
             StateInGame();
-            Debug.Log("OnInGame triggered.");
+            Debug.Log("StateInGame triggered.");
         }
     }
 
@@ -92,7 +96,28 @@ public class EventManager : MonoBehaviour
         if (StateLevelEnd != null)
         {
             StateLevelEnd();
-            Debug.Log("OnLevelEnd triggered.");
+
+            Debug.Log("StateLevelEnd triggered.");
+        }
+    }
+
+    public void OnInputHandled(float horizontalInputValue)
+    {
+        if(InputHandled != null)
+        {
+            InputHandled(horizontalInputValue);
+
+            Debug.Log("InputHandled triggered.");
+        }
+    }
+
+    public void OnPlayerHitObstacle()
+    {
+        if(PlayerHitObstacle != null)
+        {
+            PlayerHitObstacle();
+
+            Debug.Log("PlayerHitObstacle triggered.");
         }
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Coati.CoinBowlStack.Enums;
 
 public class LevelManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class LevelManager : MonoBehaviour
     #endregion // Singleton
 
     #region Variables
+
+    public GameState CurrentGameState = GameState.TapToPlay;
 
     #endregion // Variables
 

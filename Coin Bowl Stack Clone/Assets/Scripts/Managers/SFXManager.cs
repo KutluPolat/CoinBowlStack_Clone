@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using Sirenix.OdinInspector;
-using CompanyName.GameName.Enums;
+using Coati.CoinBowlStack.Enums;
 
 public class SFXManager : MonoBehaviour
 {
