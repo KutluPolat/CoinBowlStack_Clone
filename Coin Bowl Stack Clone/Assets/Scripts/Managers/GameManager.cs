@@ -63,23 +63,9 @@ public class GameManager : MonoBehaviour
      * 6-) Assign that prefab on created variable.
      */
     [BoxGroup("Managers"), AssetsOnly, ShowInInspector]
-    private GameObject _inputManager, _animationManager, _levelManager, _eventManager, _sfxManager;
+    private GameObject _animationManager, _levelManager, _eventManager, _sfxManager;
 
     #endregion // Manager Prefabs
-
-    #region Controller Prefabs
-
-    [BoxGroup("Controllers"), AssetsOnly, ShowInInspector]
-    private GameObject _controllerOnePrefab, _contollerTwoPrefab;
-
-    #endregion // Controller Prefabs
-
-    #region Controller Properties
-
-    public ControllerOne ControllerOne { get; private set; }
-    public ControllerTwo ControllerTwo { get; private set; }
-
-    #endregion // Controller Properties
 
     #endregion // Variables
 
@@ -97,7 +83,6 @@ public class GameManager : MonoBehaviour
     private void InitializeManagers()
     {
         Instantiate(_eventManager, _managerHolder.transform);
-        Instantiate(_inputManager, _managerHolder.transform);
         Instantiate(_animationManager, _managerHolder.transform);
         Instantiate(_levelManager, _managerHolder.transform);
         Instantiate(_sfxManager, _managerHolder.transform);
@@ -105,8 +90,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeControllers()
     {
-        ControllerOne = Instantiate(_controllerOnePrefab, _controllerHolder.transform).GetComponent<ControllerOne>();
-        ControllerTwo = Instantiate(_contollerTwoPrefab, _controllerHolder.transform).GetComponent<ControllerTwo>();
+
     }
 
     #endregion // Initializations.
