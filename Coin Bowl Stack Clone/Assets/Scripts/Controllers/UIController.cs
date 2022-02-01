@@ -16,19 +16,28 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         SubscribeEvents();
-        UpdateTotalAssetText();
+        UpdateTexts(null);
     }
 
-    private void UpdateTotalAssetText() => _collectedAssets.text = GameManager.Instance.CollectedAsset.ToString() + "$";
+    private void UpdateCollectedAssetsText() => _collectedAssets.text = GameManager.Instance.CollectedAsset.ToString() + "$";
+    private void UpdateTexts(GameObject stack)
+    {
+        UpdateCollectedAssetsText();
+        _totalAssets.text = GameManager.Instance.TotalAsset.ToString() + "$";
+    }
 
     private void SubscribeEvents()
     {
-        EventManager.Instance.CoinCollected += UpdateTotalAssetText;
+        EventManager.Instance.CoinCollected += UpdateCollectedAssetsText;
+
+        EventManager.Instance.StackedObjectExchanged += UpdateTexts;
     }
 
     private void UnsubscribeEvents()
     {
-        EventManager.Instance.CoinCollected -= UpdateTotalAssetText;
+        EventManager.Instance.CoinCollected -= UpdateCollectedAssetsText;
+
+        EventManager.Instance.StackedObjectExchanged -= UpdateTexts;
     }
 
     private void OnDestroy()

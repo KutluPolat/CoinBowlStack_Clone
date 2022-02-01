@@ -25,7 +25,7 @@ public class StackHandler : MonoBehaviour
 
     private void FollowLeader()
     {
-        if (IsStacked)
+        if (IsStacked && ConnectedStack != null)
         {
             transform.position = Vector3.Lerp(transform.position, TargetPosition, _followingSpeed);
         }

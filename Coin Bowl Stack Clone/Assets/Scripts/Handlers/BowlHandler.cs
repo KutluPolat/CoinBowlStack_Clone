@@ -8,8 +8,7 @@ public class BowlHandler : MonoBehaviour
     [SerializeField]
     private int _maxNumberOfCoinsPerSpawn = 10;
 
-    [SerializeField]
-    private float _delayBetweenSpawningCoin = 0.1f;
+    private float _delayBetweenSpawningCoin = 0.025f;
 
     private float _valueOfBowl;
 
@@ -48,8 +47,9 @@ public class BowlHandler : MonoBehaviour
         {
             Vector3 randomPositionInsideStack = Random.insideUnitSphere * 0.5f + transform.position;
 
-            Instantiate(coin.Prefab, randomPositionInsideStack, Random.rotation, transform)
-                .GetComponent<Renderer>().material = coin.Material;
+            GameObject spawnedCoin = Instantiate(coin.Prefab, randomPositionInsideStack, Random.rotation, transform);
+            spawnedCoin.GetComponent<Renderer>().material = coin.Material;
+            _coinsInThisStack.Push(spawnedCoin);
 
             yield return new WaitForSeconds(_delayBetweenSpawningCoin);
         }

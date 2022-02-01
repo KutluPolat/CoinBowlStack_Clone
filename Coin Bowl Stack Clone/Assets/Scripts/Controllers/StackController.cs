@@ -32,7 +32,6 @@ public class StackController : MonoBehaviour
     private void ExchangeStack(GameObject stack)
     {
         stack.GetComponent<BowlHandler>().ExchangeCoin();
-        RemoveFromStack(stack);
         DestroyStackedObject(stack);
     }
 
@@ -40,14 +39,34 @@ public class StackController : MonoBehaviour
 
     #region Destroying
 
+    private void DestroyStackedObject(GameObject stack)
+    {
+        RemoveFromStack(stack);
+        Destroy(stack);
+        StartCoroutine(RepairStacks());
+    }
+
     private void RemoveFromStack(GameObject stack)
     {
         _stacks.Remove(stack);
     }
 
-    private void DestroyStackedObject(GameObject stack)
+    private IEnumerator RepairStacks()
     {
-        Destroy(stack);
+        yield return new WaitForFixedUpdate();
+
+        foreach(GameObject stack in _stacks)
+        {
+            if (stack.GetComponent<StackHandler>().ConnectedStack == null)
+            {
+                int currentStackIndex = _stacks.IndexOf(stack);
+                bool shouldConnectToPlayer = currentStackIndex == 0;
+
+                GameObject newConnectedStack = shouldConnectToPlayer ? GameManager.Instance.Player : _stacks[currentStackIndex - 1];
+
+                stack.GetComponent<StackHandler>().ConnectedStack = newConnectedStack;
+            }
+        }
     }
 
     #endregion // Removing
@@ -80,8 +99,6 @@ public class StackController : MonoBehaviour
     {
         EventManager.Instance.ObjectStacked += AddToStack;
 
-
-        EventManager.Instance.StackedObjectDestroyed += RemoveFromStack;
         EventManager.Instance.StackedObjectDestroyed += DestroyStackedObject;
 
         EventManager.Instance.StackedObjectExchanged += ExchangeStack;
@@ -91,7 +108,6 @@ public class StackController : MonoBehaviour
     {
         EventManager.Instance.ObjectStacked -= AddToStack;
 
-        EventManager.Instance.StackedObjectDestroyed -= RemoveFromStack;
         EventManager.Instance.StackedObjectDestroyed -= DestroyStackedObject;
 
         EventManager.Instance.StackedObjectExchanged -= ExchangeStack;

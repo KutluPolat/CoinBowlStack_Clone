@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
      * 6-) Assign that prefab on created variable.
      */
     [BoxGroup("Managers"), AssetsOnly, SerializeField]
-    private GameObject _animationManager, _levelManager, _eventManager, _sfxManager;
+    private GameObject _animationManager, _levelManager, _eventManager;
 
     #endregion // Manager Prefabs
 
@@ -101,7 +101,6 @@ public class GameManager : MonoBehaviour
         Instantiate(_eventManager, _managerHolder.transform);
         Instantiate(_animationManager, _managerHolder.transform);
         Instantiate(_levelManager, _managerHolder.transform);
-        Instantiate(_sfxManager, _managerHolder.transform);
     }
 
     private void InitializeControllers()
