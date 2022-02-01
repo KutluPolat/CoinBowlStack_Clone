@@ -54,6 +54,7 @@ public class InputController : MonoBehaviour
         AndroidInputs();
 #endif
     }
+
     private void UnityEditorInputs()
     {
         if (Input.GetKey(KeyCode.A))

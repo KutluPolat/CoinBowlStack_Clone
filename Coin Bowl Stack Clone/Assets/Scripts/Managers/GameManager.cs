@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     #region Variables
 
+    public float CollectedAsset, TotalAsset;
+
     #region Level Elements
 
     [TabGroup("Elements", "GameObject"), InlineEditor(InlineEditorModes.LargePreview), SceneObjectsOnly]

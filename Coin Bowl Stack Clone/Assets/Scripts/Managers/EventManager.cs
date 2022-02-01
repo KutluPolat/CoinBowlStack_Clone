@@ -29,6 +29,7 @@ public class EventManager : MonoBehaviour
     public delegate void InputHandler(float horizontalInputValue);
     public delegate void Stack(GameObject collectedStack);
     public delegate void Hit();
+    public delegate void Coin();
 
     #endregion // Delegates
 
@@ -37,59 +38,69 @@ public class EventManager : MonoBehaviour
     public event Buttons PressedRestart, PressedNextLevel;
     public event States StateTapToPlay, StateInGame, StateEndingSequance, StateLevelEnd;
     public event InputHandler InputHandled;
-    public event Stack ObjectStacked;
+    public event Stack ObjectStacked, StackedObjectDestroyed, StackedObjectExchanged;
     public event Hit PlayerHitObstacle;
+    public event Coin CoinCollected;
 
     #endregion // Events
 
     #region Methods
 
-    public void OnPressedRestart()
+    public void OnCoinCollected()
     {
-        if (PressedRestart != null)
+        if(CoinCollected != null)
         {
-            PressedRestart();
+            CoinCollected();
 
-            Debug.Log("PressedRestart triggered.");
+            Debug.Log("CoinCollected triggered.");
         }
     }
 
-    public void OnPressedNextLevel()
+    public void OnPlayerHitObstacle()
     {
-        if (PressedNextLevel != null)
+        if (PlayerHitObstacle != null)
         {
-            PressedNextLevel();
+            PlayerHitObstacle();
 
-            Debug.Log("PressedNextLevel triggered.");
+            Debug.Log("PlayerHitObstacle triggered.");
         }
     }
 
-    public void OnStateTapToPlay()
+    public void OnStackedObjectExchanged(GameObject stackedObject)
     {
-        if (StateTapToPlay != null)
+        if (StackedObjectExchanged != null)
         {
-            StateTapToPlay();
-
-            Debug.Log("StateTapToPlay triggered.");
+            StackedObjectExchanged(stackedObject);
+            Debug.Log("StackedObjectExchanged triggered.");
         }
     }
 
-    public void OnStateInGame()
+    public void OnStackedObjectDestroyed(GameObject stackedObject)
     {
-        if (StateInGame != null)
+        if (StackedObjectDestroyed != null)
         {
-            StateInGame();
-            Debug.Log("StateInGame triggered.");
+            StackedObjectDestroyed(stackedObject);
+            Debug.Log("StackedObjectDestroyed triggered.");
         }
     }
 
-    public void OnStateEndingSequance()
-    {
-        if (StateEndingSequance != null)
-        {
-            StateEndingSequance();
 
-            Debug.Log("StateEndingSequance triggered.");
+    public void OnObjectStacked(GameObject stackedObject)
+    {
+        if (ObjectStacked != null)
+        {
+            ObjectStacked(stackedObject);
+            Debug.Log("ObjectStacked triggered.");
+        }
+    }
+
+    public void OnInputHandled(float horizontalInputValue)
+    {
+        if (InputHandled != null)
+        {
+            InputHandled(horizontalInputValue);
+
+            Debug.Log("InputHandled triggered.");
         }
     }
 
@@ -103,32 +114,52 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public void OnInputHandled(float horizontalInputValue)
+    public void OnStateEndingSequance()
     {
-        if(InputHandled != null)
+        if (StateEndingSequance != null)
         {
-            InputHandled(horizontalInputValue);
+            StateEndingSequance();
 
-            Debug.Log("InputHandled triggered.");
+            Debug.Log("StateEndingSequance triggered.");
         }
     }
 
-    public void OnObjectStacked(GameObject stackedObject)
+    public void OnStateInGame()
     {
-        if(ObjectStacked != null)
+        if (StateInGame != null)
         {
-            ObjectStacked(stackedObject);
-            Debug.Log("ObjectStacked triggered.");
+            StateInGame();
+            Debug.Log("StateInGame triggered.");
         }
     }
 
-    public void OnPlayerHitObstacle()
+    public void OnStateTapToPlay()
     {
-        if(PlayerHitObstacle != null)
+        if (StateTapToPlay != null)
         {
-            PlayerHitObstacle();
+            StateTapToPlay();
 
-            Debug.Log("PlayerHitObstacle triggered.");
+            Debug.Log("StateTapToPlay triggered.");
+        }
+    }
+
+    public void OnPressedNextLevel()
+    {
+        if (PressedNextLevel != null)
+        {
+            PressedNextLevel();
+
+            Debug.Log("PressedNextLevel triggered.");
+        }
+    }
+
+    public void OnPressedRestart()
+    {
+        if (PressedRestart != null)
+        {
+            PressedRestart();
+
+            Debug.Log("PressedRestart triggered.");
         }
     }
 

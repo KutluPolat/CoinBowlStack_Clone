@@ -17,12 +17,6 @@ public abstract class SaveSystem : MonoBehaviour
         get { return Level - 1; }
     }
 
-    public static float Gold
-    {
-        get { return PlayerPrefs.GetFloat("Gold"); }
-        set { PlayerPrefs.SetFloat("Gold", value); }
-    }
-
     #endregion // Variables
 
     #region Methods

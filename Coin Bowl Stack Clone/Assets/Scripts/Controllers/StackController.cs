@@ -5,25 +5,61 @@ using System.Linq;
 
 public class StackController : MonoBehaviour
 {
-    private List<GameObject> _stack = new List<GameObject>();
+    #region Variables
+
+    private List<GameObject> _stacks = new List<GameObject>();
     private GameObject LeaderOfStack 
     { 
         get
         {
-            if(_stack.Count == 0)
+            if(_stacks.Count == 0)
             {
                 return GameManager.Instance.Player;
             }
             else
             {
-                return _stack.Last();
+                return _stacks.Last();
             }
         }
     }
 
+    #endregion // Variables
+
+    #region Methods
+
+    #region Exchanging
+
+    private void ExchangeStack(GameObject stack)
+    {
+        stack.GetComponent<BowlHandler>().ExchangeCoin();
+        RemoveFromStack(stack);
+        DestroyStackedObject(stack);
+    }
+
+    #endregion // Exchanging
+
+    #region Destroying
+
+    private void RemoveFromStack(GameObject stack)
+    {
+        _stacks.Remove(stack);
+    }
+
+    private void DestroyStackedObject(GameObject stack)
+    {
+        Destroy(stack);
+    }
+
+    #endregion // Removing
+
+    #region Collecting
+
     private void AddToStack(GameObject collectedStack)
     {
-        _stack.Add(collectedStack);
+        ConnectCollectedStackToLeader(collectedStack.GetComponent<StackHandler>());
+        SetIsStackedFlagToTrue(collectedStack.GetComponent<StackHandler>());
+
+        _stacks.Add(collectedStack);
     }
 
     private void ConnectCollectedStackToLeader(StackHandler collectedStack)
@@ -36,30 +72,41 @@ public class StackController : MonoBehaviour
         collectedStack.IsStacked = true;
     }
 
+    #endregion // Collecting
+
+    #region Events
+
     public void SubscribeEvents()
     {
-        EventManager.Instance.ObjectStacked += (GameObject collectedStack) 
-            => ConnectCollectedStackToLeader(collectedStack.GetComponent<StackHandler>());
-
-        EventManager.Instance.ObjectStacked += (GameObject collectedStack) 
-            => SetIsStackedFlagToTrue(collectedStack.GetComponent<StackHandler>());
-
         EventManager.Instance.ObjectStacked += AddToStack;
+
+
+        EventManager.Instance.StackedObjectDestroyed += RemoveFromStack;
+        EventManager.Instance.StackedObjectDestroyed += DestroyStackedObject;
+
+        EventManager.Instance.StackedObjectExchanged += ExchangeStack;
     }
 
     private void UnsubscribeEvents()
     {
-        EventManager.Instance.ObjectStacked -= (GameObject collectedStack)
-               => ConnectCollectedStackToLeader(collectedStack.GetComponent<StackHandler>());
-
-        EventManager.Instance.ObjectStacked -= (GameObject collectedStack)
-            => SetIsStackedFlagToTrue(collectedStack.GetComponent<StackHandler>());
-
         EventManager.Instance.ObjectStacked -= AddToStack;
+
+        EventManager.Instance.StackedObjectDestroyed -= RemoveFromStack;
+        EventManager.Instance.StackedObjectDestroyed -= DestroyStackedObject;
+
+        EventManager.Instance.StackedObjectExchanged -= ExchangeStack;
     }
+
+    #endregion // Events
+
+    #region OnDestroy
 
     private void OnDestroy()
     {
         UnsubscribeEvents();
     }
+
+    #endregion // OnDestroy
+
+    #endregion // Methods
 }

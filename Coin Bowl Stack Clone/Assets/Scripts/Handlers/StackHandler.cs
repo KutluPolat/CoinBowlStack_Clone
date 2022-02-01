@@ -35,10 +35,8 @@ public class StackHandler : MonoBehaviour
     {
         if(IsStacked == false)
         {
-            Debug.Log("Is stacked false");
             if (other.CompareTag("Stack") || other.CompareTag("Player"))
             {
-                Debug.Log("here");
                 EventManager.Instance.OnObjectStacked(gameObject);
             }
         }

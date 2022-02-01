@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2720cfe5027bec644b06310ab404e6a0, type: 3}
+  m_Name: OneCent
+  m_EditorClassIdentifier: 
+  Value: 0.5
+  CoinType: 0
+  Material: {fileID: 2100000, guid: 7cbc71365ee2c0b41b65a44c4ccb7462, type: 2}
+  Prefab: {fileID: 403468040667739997, guid: 4792d223048f7014eab7cd6cb681cbec, type: 3}
