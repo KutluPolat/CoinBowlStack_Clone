@@ -7,8 +7,8 @@ using DG.Tweening;
 public class MovementController : MonoBehaviour
 {
     #region Variables
-    [SerializeField, Range(0.1f, 0.3f)]
-    private float _horizontalSpeed = 0.2f, _verticalSpeed = 0.12f;
+    [SerializeField, Range(0f, 0.3f)]
+    private float _horizontalSpeed = 0.001f, _verticalSpeed = 0.12f;
 
     private MovementState CurrentMovementstate = MovementState.Blocked;
 
@@ -86,7 +86,7 @@ public class MovementController : MonoBehaviour
         EventManager.Instance.StateInGame -= () => SetMovementStateTo(MovementState.HorizontalAndForward);
         EventManager.Instance.StateEndingSequance -= () => SetMovementStateTo(MovementState.Blocked);
 
-        EventManager.Instance.InputHandled += MoveHorizontal;
+        EventManager.Instance.InputHandled -= MoveHorizontal;
 
         EventManager.Instance.PlayerHitObstacle -= PushPlayerBack;
     }

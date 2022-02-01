@@ -5,30 +5,31 @@ using Coati.CoinBowlStack.Enums;
 
 public class InputController : MonoBehaviour
 {
-    #region Start
-
-    private void Start()
-    {
-
-    }
-
-    #endregion // Start
-
-    #region Update
-    private void Update()
-    {
-        HandleInputs();
-    }
-    #endregion // Update
-
     #region Variables
 
     private Vector3 _inputDirection;
+    private bool _isInputHandled;
 
     [Range(0.01f, 1f)]
     private readonly float _touchInputSpeed = 0.1f;
 
     #endregion // Variables
+
+    #region Updates
+    private void Update()
+    {
+        HandleInputs();
+    }
+
+    private void FixedUpdate()
+    {
+        if (_isInputHandled)
+        {
+            EventManager.Instance.OnInputHandled(GetHorizontalInput());
+            _isInputHandled = false;
+        }
+    }
+    #endregion // Updates
 
     #region Methods
 
@@ -36,6 +37,8 @@ public class InputController : MonoBehaviour
 
     private float GetHorizontalInput()
     {
+        StartGameIfPlayerSwipes();
+
         Vector3 inputHolder = _inputDirection;
 
         _inputDirection = Vector3.zero;
@@ -50,20 +53,18 @@ public class InputController : MonoBehaviour
 #elif PLATFORM_ANDROID
         AndroidInputs();
 #endif
-
-        StartGameIfPlayerSwipes();
     }
     private void UnityEditorInputs()
     {
         if (Input.GetKey(KeyCode.A))
         {
             _inputDirection += -GameManager.Instance.Player.transform.right;
-            EventManager.Instance.OnInputHandled(GetHorizontalInput());
+            _isInputHandled = true;
         }  
         else if (Input.GetKey(KeyCode.D))
         {
             _inputDirection += GameManager.Instance.Player.transform.right;
-            EventManager.Instance.OnInputHandled(GetHorizontalInput());
+            _isInputHandled = true;
         }
             
     }
@@ -75,7 +76,7 @@ public class InputController : MonoBehaviour
             float horizontalTouchDeltaPosition = Input.touches[0].deltaPosition.x;
 
             _inputDirection += GameManager.Instance.Player.transform.right * horizontalTouchDeltaPosition * _touchInputSpeed;
-            EventManager.Instance.OnInputHandled(GetHorizontalInput());
+            _isInputHandled = true;
         }
     }
 

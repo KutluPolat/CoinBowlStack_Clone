@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SubscribeEvents();
+        EventManager.Instance.OnStateTapToPlay();
     }
 
     #endregion // Singleton

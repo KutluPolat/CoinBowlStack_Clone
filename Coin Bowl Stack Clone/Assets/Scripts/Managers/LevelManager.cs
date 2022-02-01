@@ -33,6 +33,9 @@ public class LevelManager : MonoBehaviour
 
     public GameState CurrentGameState = GameState.TapToPlay;
 
+    [SerializeField]
+    private GameStateHandler _gameStateHandler;
+
     #endregion // Variables
 
     #region Methods
@@ -65,6 +68,8 @@ public class LevelManager : MonoBehaviour
     {
         EventManager.Instance.PressedRestart += ReloadActiveScene;
         EventManager.Instance.PressedNextLevel += NextLevel;
+
+        _gameStateHandler.SubscribeEvents();
     }
     private void UnsubscribeEvents()
     {
