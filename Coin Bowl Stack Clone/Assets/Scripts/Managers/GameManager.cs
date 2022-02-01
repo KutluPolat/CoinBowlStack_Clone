@@ -76,6 +76,9 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Controllers"), SceneObjectsOnly]
     public InputController InputController;
 
+    [BoxGroup("Controllers"), SceneObjectsOnly]
+    public StackController StackController;
+
     #endregion // Controllers
 
     #endregion // Variables
@@ -103,6 +106,7 @@ public class GameManager : MonoBehaviour
     {
         MovementController.SubscribeEvents();
         //InputController.SubscribeEvents();
+        StackController.SubscribeEvents();
     }
 
     #endregion // Initializations.

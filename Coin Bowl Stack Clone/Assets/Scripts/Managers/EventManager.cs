@@ -27,6 +27,7 @@ public class EventManager : MonoBehaviour
     public delegate void Buttons();
     public delegate void States();
     public delegate void InputHandler(float horizontalInputValue);
+    public delegate void Stack(GameObject collectedStack);
     public delegate void Hit();
 
     #endregion // Delegates
@@ -36,6 +37,7 @@ public class EventManager : MonoBehaviour
     public event Buttons PressedRestart, PressedNextLevel;
     public event States StateTapToPlay, StateInGame, StateEndingSequance, StateLevelEnd;
     public event InputHandler InputHandled;
+    public event Stack ObjectStacked;
     public event Hit PlayerHitObstacle;
 
     #endregion // Events
@@ -108,6 +110,15 @@ public class EventManager : MonoBehaviour
             InputHandled(horizontalInputValue);
 
             Debug.Log("InputHandled triggered.");
+        }
+    }
+
+    public void OnObjectStacked(GameObject stackedObject)
+    {
+        if(ObjectStacked != null)
+        {
+            ObjectStacked(stackedObject);
+            Debug.Log("ObjectStacked triggered.");
         }
     }
 
