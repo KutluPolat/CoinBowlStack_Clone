@@ -91,6 +91,13 @@ public class GameManager : MonoBehaviour
 
     #endregion // Controllers
 
+    #region Handlers
+
+    [BoxGroup("Handlers"), SceneObjectsOnly]
+    public ExplosionHandler ExplosionHandler;
+
+    #endregion // Handlers
+
     #endregion // Variables
 
     #region Methods

@@ -21,15 +21,20 @@ public class BowlHandler : MonoBehaviour
 
     #region Fields
 
+    [HideInInspector]
+    public BowlType BowlSize = BowlType.Small;
+
+    [HideInInspector]
+    public Stack<GameObject> _coinsInThisStack = new Stack<GameObject>();
+
+    [SerializeField]
+    private List<GameObject> _smallBowlPieces, _mediumBowlPieces, _largeBowlPieces = new List<GameObject>();
+
     private float _delayBetweenSpawningCoin = 0.025f;
 
     private float _valueOfBowl;
 
-    private Stack<GameObject> _coinsInThisStack = new Stack<GameObject>();
     private Stack<CoinType> _coinTypesInThisStack = new Stack<CoinType>();
-
-    [HideInInspector]
-    public BowlType BowlSize = BowlType.Small;
 
     #endregion // Fields
 
@@ -72,33 +77,6 @@ public class BowlHandler : MonoBehaviour
         ChooseModelsAccordingToBowlSizes();
     }
 
-    private void DropExtraCoins()
-    {
-        for (int i = 0; i < _maxNumberOfCoinsPerSpawn; i++)
-        {
-            Vector3 targetDroppingPositionOffset = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-            Vector3 randomDroppingPositions = _coinsInThisStack.Peek().transform.position + targetDroppingPositionOffset;
-
-            GameObject coin = _coinsInThisStack.Pop();
-            coin.transform.DOJump(randomDroppingPositions, 2f, 1, 2f).OnComplete(() => Destroy(coin));
-        }
-
-        switch (_coinTypesInThisStack.Pop())
-        {
-            case CoinType.OneCent:
-                AddValue(-0.5f);
-                break;
-
-            case CoinType.FiveCent:
-                AddValue(-2.5f);
-                break;
-
-            case CoinType.TenCent:
-                AddValue(-5f);
-                break;
-        }
-    }
-
     private void ChooseModelsAccordingToBowlSizes()
     {
         _smallVase.SetActive(false);
@@ -118,6 +96,21 @@ public class BowlHandler : MonoBehaviour
             case BowlType.Large:
                 _largeVase.SetActive(true);
                 break;
+        }
+    }
+
+    public List<GameObject> GetGlassPieces()
+    {
+        switch (BowlSize)
+        {
+            case BowlType.Medium:
+                return _mediumBowlPieces;
+
+            case BowlType.Large:
+                return _largeBowlPieces;
+
+            default:
+                return _smallBowlPieces;
         }
     }
 
@@ -183,6 +176,47 @@ public class BowlHandler : MonoBehaviour
             _coinsInThisStack.Push(spawnedCoin);
 
             yield return new WaitForSeconds(_delayBetweenSpawningCoin);
+        }
+    }
+
+    public void DropAllCoins()
+    {
+        for (int i = 0; i < _coinTypesInThisStack.Count; i++)
+        {
+            DropOnePackOfCoins();
+        }
+    }
+
+    private void DropExtraCoins()
+    {
+        DropOnePackOfCoins();
+
+        switch (_coinTypesInThisStack.Pop())
+        {
+            case CoinType.OneCent:
+                AddValue(-0.5f);
+                break;
+
+            case CoinType.FiveCent:
+                AddValue(-2.5f);
+                break;
+
+            case CoinType.TenCent:
+                AddValue(-5f);
+                break;
+        }
+    }
+
+    private void DropOnePackOfCoins()
+    {
+        for (int i = 0; i < _maxNumberOfCoinsPerSpawn; i++)
+        {
+            Vector3 targetDroppingPositionOffset = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+            Vector3 randomDroppingPositions = _coinsInThisStack.Peek().transform.position + targetDroppingPositionOffset;
+
+            GameObject coin = _coinsInThisStack.Pop();
+            coin.transform.parent = null;
+            coin.transform.DOJump(randomDroppingPositions, 2f, 1, 1f).OnComplete(() => Destroy(coin));
         }
     }
 

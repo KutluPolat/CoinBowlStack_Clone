@@ -60,8 +60,9 @@ public class MovementController : MonoBehaviour
 
         EventManager.Instance.StateInGame += () => SetMovementStateTo(MovementState.HorizontalAndForward);
 
-        EventManager.Instance.StateEndingSequance += () => SetMovementStateTo(MovementState.Blocked);
         EventManager.Instance.StateEndingSequance += MoveToCenter;
+
+        EventManager.Instance.StateLevelEnd += () => SetMovementStateTo(MovementState.Blocked);
 
         EventManager.Instance.InputHandled += MoveHorizontal;
     }
@@ -72,8 +73,9 @@ public class MovementController : MonoBehaviour
 
         EventManager.Instance.StateInGame -= () => SetMovementStateTo(MovementState.HorizontalAndForward);
 
-        EventManager.Instance.StateEndingSequance -= () => SetMovementStateTo(MovementState.Blocked);
         EventManager.Instance.StateEndingSequance -= MoveToCenter;
+
+        EventManager.Instance.StateLevelEnd -= () => SetMovementStateTo(MovementState.Blocked);
 
         EventManager.Instance.InputHandled -= MoveHorizontal;
     }

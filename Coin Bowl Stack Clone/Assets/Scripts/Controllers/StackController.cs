@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using DG.Tweening;
 
 public class StackController : MonoBehaviour
 {
     #region Variables
+    private float _waveScalingSpeed = 0.15f, _delayBetweenWaves = 0.05f;
 
     [SerializeField, Range(0f, 2f)]
     private float _repairDelay = 1f;
@@ -51,6 +53,7 @@ public class StackController : MonoBehaviour
     {
         stack.GetComponent<BowlHandler>().RemoveValueFromCollectedAssets();
         RemoveFromStack(stack);
+        GameManager.Instance.ExplosionHandler.Explode(stack.GetComponent<BowlHandler>());
         Destroy(stack);
         StartCoroutine(RepairStacks());
     }
@@ -88,6 +91,7 @@ public class StackController : MonoBehaviour
         SetIsStackedFlagToTrue(collectedStack.GetComponent<StackHandler>());
 
         _stacks.Add(collectedStack);
+        StartCoroutine(WaveEffect());
     }
 
     private void ConnectCollectedStackToLeader(StackHandler collectedStack)
@@ -101,6 +105,22 @@ public class StackController : MonoBehaviour
     }
 
     #endregion // Collecting
+
+    #region Wave Effect
+
+    private IEnumerator WaveEffect()
+    {
+        for (int i = _stacks.Count - 1; i >= 0; i--)
+        {
+            _stacks[i].transform.DOScale(1.2f, _waveScalingSpeed);
+
+            yield return new WaitForSeconds(_delayBetweenWaves);
+
+            _stacks[i].transform.DOScale(1f, _waveScalingSpeed);
+        }
+    }
+
+    #endregion // Wave Effect
 
     #region Events
 
