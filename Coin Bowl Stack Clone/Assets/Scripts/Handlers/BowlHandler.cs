@@ -118,6 +118,12 @@ public class BowlHandler : MonoBehaviour
 
     #region Value Controls
 
+    public void AddValueOfThisToCollectedAssets()
+    {
+        GameManager.Instance.CollectedAsset += _valueOfBowl;
+        UpdateTextsOnValueChanged();
+    }
+
     public void ExchangeCoin()
     {
         GameManager.Instance.TotalAsset += _valueOfBowl;

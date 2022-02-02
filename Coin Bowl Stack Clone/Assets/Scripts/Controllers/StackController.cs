@@ -9,8 +9,8 @@ public class StackController : MonoBehaviour
     #region Variables
     private float _waveScalingSpeed = 0.15f, _delayBetweenWaves = 0.05f;
 
-    [SerializeField, Range(0f, 2f)]
-    private float _repairDelay = 1f;
+    [SerializeField, Range(0f, 5f)]
+    private float _jumpDuration = 2f;
 
     private List<GameObject> _stacks = new List<GameObject>();
     private GameObject LeaderOfStack 
@@ -51,33 +51,34 @@ public class StackController : MonoBehaviour
 
     private void DestroyStackedObject(GameObject stack)
     {
-        stack.GetComponent<BowlHandler>().RemoveValueFromCollectedAssets();
-        RemoveFromStack(stack);
         GameManager.Instance.ExplosionHandler.Explode(stack.GetComponent<BowlHandler>());
+        ThrowStackedObjectsAway(stack);
+        RemoveFromStack(stack);
         Destroy(stack);
-        StartCoroutine(RepairStacks());
     }
 
     private void RemoveFromStack(GameObject stack)
     {
+        stack.GetComponent<BowlHandler>().RemoveValueFromCollectedAssets();
+
+        stack.GetComponent<StackHandler>().ConnectedStack = null;
+        stack.GetComponent<StackHandler>().IsStacked = false;
+
         _stacks.Remove(stack);
     }
 
-    private IEnumerator RepairStacks()
+    private void ThrowStackedObjectsAway(GameObject stack)
     {
-        yield return new WaitForSeconds(_repairDelay);
-
-        foreach(GameObject stack in _stacks)
+        for (int i = _stacks.Count - 1; i > _stacks.IndexOf(stack); i--)
         {
-            if (stack.GetComponent<StackHandler>().ConnectedStack == null)
-            {
-                int currentStackIndex = _stacks.IndexOf(stack);
-                bool shouldConnectToPlayer = currentStackIndex == 0;
+            Vector3 randomJumpOffset = new Vector3(Random.Range(-4f, 4f), 0, Random.Range(10f, 15f));
+            Vector3 finalJumpPosition = _stacks[i].transform.position + randomJumpOffset;
+            finalJumpPosition.x = Mathf.Clamp(finalJumpPosition.x, -4f, 4f);
 
-                GameObject newConnectedStack = shouldConnectToPlayer ? GameManager.Instance.Player : _stacks[currentStackIndex - 1];
+            GameObject throwedStack = _stacks[i];
+            RemoveFromStack(_stacks[i]);
 
-                stack.GetComponent<StackHandler>().ConnectedStack = newConnectedStack;
-            }
+            throwedStack.transform.DOJump(finalJumpPosition, 1f, 0, _jumpDuration);
         }
     }
 
@@ -87,6 +88,7 @@ public class StackController : MonoBehaviour
 
     private void AddToStack(GameObject collectedStack)
     {
+        AddValueOfCollectedStackToCollectedAssets(collectedStack.GetComponent<BowlHandler>());
         ConnectCollectedStackToLeader(collectedStack.GetComponent<StackHandler>());
         SetIsStackedFlagToTrue(collectedStack.GetComponent<StackHandler>());
 
@@ -94,15 +96,9 @@ public class StackController : MonoBehaviour
         StartCoroutine(WaveEffect());
     }
 
-    private void ConnectCollectedStackToLeader(StackHandler collectedStack)
-    {
-        collectedStack.ConnectedStack = LeaderOfStack;
-    }
-
-    private void SetIsStackedFlagToTrue(StackHandler collectedStack)
-    {
-        collectedStack.IsStacked = true;
-    }
+    private void AddValueOfCollectedStackToCollectedAssets(BowlHandler collectedStack) => collectedStack.AddValueOfThisToCollectedAssets();
+    private void ConnectCollectedStackToLeader(StackHandler collectedStack) => collectedStack.ConnectedStack = LeaderOfStack;
+    private void SetIsStackedFlagToTrue(StackHandler collectedStack) => collectedStack.IsStacked = true;
 
     #endregion // Collecting
 
