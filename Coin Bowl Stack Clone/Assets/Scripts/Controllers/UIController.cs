@@ -30,14 +30,14 @@ public class UIController : MonoBehaviour
     {
         EventManager.Instance.CoinCollected += UpdateCollectedAssetsText;
 
-        EventManager.Instance.StackedObjectExchanged += UpdateTexts;
+        EventManager.Instance.StackedObjectDestroyed += UpdateTexts;
     }
 
     private void UnsubscribeEvents()
     {
         EventManager.Instance.CoinCollected -= UpdateCollectedAssetsText;
 
-        EventManager.Instance.StackedObjectExchanged -= UpdateTexts;
+        EventManager.Instance.StackedObjectDestroyed -= UpdateTexts;
     }
 
     private void OnDestroy()

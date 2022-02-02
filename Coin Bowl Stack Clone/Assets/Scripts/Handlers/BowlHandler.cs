@@ -23,8 +23,12 @@ public class BowlHandler : MonoBehaviour
 
     public void ExchangeCoin()
     {
-        GameManager.Instance.CollectedAsset -= _valueOfBowl;
         GameManager.Instance.TotalAsset += _valueOfBowl;
+    }
+
+    public void RemoveValueFromCollectedAssets()
+    {
+        GameManager.Instance.CollectedAsset -= _valueOfBowl;
     }
 
     private void CollectCoin(Coin coin)

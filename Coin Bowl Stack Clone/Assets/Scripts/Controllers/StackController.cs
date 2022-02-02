@@ -7,6 +7,9 @@ public class StackController : MonoBehaviour
 {
     #region Variables
 
+    [SerializeField, Range(0f, 2f)]
+    private float _repairDelay = 1f;
+
     private List<GameObject> _stacks = new List<GameObject>();
     private GameObject LeaderOfStack 
     { 
@@ -41,6 +44,7 @@ public class StackController : MonoBehaviour
 
     private void DestroyStackedObject(GameObject stack)
     {
+        stack.GetComponent<BowlHandler>().RemoveValueFromCollectedAssets();
         RemoveFromStack(stack);
         Destroy(stack);
         StartCoroutine(RepairStacks());
@@ -53,7 +57,7 @@ public class StackController : MonoBehaviour
 
     private IEnumerator RepairStacks()
     {
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(_repairDelay);
 
         foreach(GameObject stack in _stacks)
         {
