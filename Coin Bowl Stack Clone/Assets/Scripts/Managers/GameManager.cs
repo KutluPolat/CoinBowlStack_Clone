@@ -33,7 +33,12 @@ public class GameManager : MonoBehaviour
 
     #region Variables
 
+    #region UI Elements
+
+    [HideInInspector]
     public float CollectedAsset, TotalAsset;
+
+    #endregion // UI Elements
 
     #region Level Elements
 
@@ -80,6 +85,9 @@ public class GameManager : MonoBehaviour
 
     [BoxGroup("Controllers"), SceneObjectsOnly]
     public StackController StackController;
+
+    [BoxGroup("Controllers"), SceneObjectsOnly]
+    public UIController UIController;
 
     #endregion // Controllers
 

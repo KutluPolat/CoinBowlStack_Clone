@@ -8,6 +8,9 @@ TagManager:
   - ExchangeOffice
   - Obstacle
   - Machine
+  - FinishLine
+  - BiggerGate
+  - SmallerGate
   layers:
   - Default
   - TransparentFX

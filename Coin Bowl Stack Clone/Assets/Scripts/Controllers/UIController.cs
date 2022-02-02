@@ -12,36 +12,14 @@ public class UIController : MonoBehaviour
     [BoxGroup("Texts"), SerializeField]
     private TextMeshProUGUI _totalAssets;
 
-
     private void Start()
     {
-        SubscribeEvents();
-        UpdateTexts(null);
+        UpdateTexts();
     }
 
-    private void UpdateCollectedAssetsText() => _collectedAssets.text = GameManager.Instance.CollectedAsset.ToString() + "$";
-    private void UpdateTexts(GameObject stack)
+    public void UpdateTexts()
     {
-        UpdateCollectedAssetsText();
+        _collectedAssets.text = GameManager.Instance.CollectedAsset.ToString() + "$";
         _totalAssets.text = GameManager.Instance.TotalAsset.ToString() + "$";
-    }
-
-    private void SubscribeEvents()
-    {
-        EventManager.Instance.CoinCollected += UpdateCollectedAssetsText;
-
-        EventManager.Instance.StackedObjectDestroyed += UpdateTexts;
-    }
-
-    private void UnsubscribeEvents()
-    {
-        EventManager.Instance.CoinCollected -= UpdateCollectedAssetsText;
-
-        EventManager.Instance.StackedObjectDestroyed -= UpdateTexts;
-    }
-
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
     }
 }

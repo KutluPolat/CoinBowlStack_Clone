@@ -37,7 +37,7 @@ public class MovementController : MonoBehaviour
 
     private void MoveHorizontal(float horizontalInput)
     {
-        if (CanMoveHorizontalAndForward)
+        if (CanMoveHorizontalAndForward && LevelManager.Instance.CurrentGameState == GameState.InGame)
         {
             horizontalInput *= _horizontalSpeed;
 
@@ -45,50 +45,37 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private void Move(Vector3 input) => GameManager.Instance.PlayerCharacterController.Move(input);
-
-    private void PushPlayerBack() => StartCoroutine(PushPlayerBackCoroutine());
-    private IEnumerator PushPlayerBackCoroutine()
+    private void MoveToCenter()
     {
-        SetMovementStateTo(MovementState.Backward);
-
-        Vector3 offset = Vector3.back * 3;
-        Vector3 endValue = GameManager.Instance.Player.transform.position + offset;
-
-        float jumpPower = 2f;
-        int numJumps = 1;
-        float duration = 1f;
-
-        GameManager.Instance.Player.transform.DOJump(endValue, jumpPower, numJumps, duration);
-
-        yield return new WaitForSeconds(duration);
-
-        SetMovementStateTo(MovementState.HorizontalAndForward);
-        AnimationManager.Instance.ActivateAnimation_PushedBack();
+        GameManager.Instance.Player.transform.DOMoveX(0, 1f);
     }
+
+    private void Move(Vector3 input) => GameManager.Instance.PlayerCharacterController.Move(input);
 
     private void SetMovementStateTo(MovementState state) => CurrentMovementstate = state;
 
     public void SubscribeEvents()
     {
         EventManager.Instance.StateTapToPlay += () => SetMovementStateTo(MovementState.Blocked);
+
         EventManager.Instance.StateInGame += () => SetMovementStateTo(MovementState.HorizontalAndForward);
+
         EventManager.Instance.StateEndingSequance += () => SetMovementStateTo(MovementState.Blocked);
+        EventManager.Instance.StateEndingSequance += MoveToCenter;
 
         EventManager.Instance.InputHandled += MoveHorizontal;
-
-        EventManager.Instance.PlayerHitObstacle += PushPlayerBack;
     }
 
     private void UnsubscribeEvents()
     {
         EventManager.Instance.StateTapToPlay -= () => SetMovementStateTo(MovementState.Blocked);
+
         EventManager.Instance.StateInGame -= () => SetMovementStateTo(MovementState.HorizontalAndForward);
+
         EventManager.Instance.StateEndingSequance -= () => SetMovementStateTo(MovementState.Blocked);
+        EventManager.Instance.StateEndingSequance -= MoveToCenter;
 
         EventManager.Instance.InputHandled -= MoveHorizontal;
-
-        EventManager.Instance.PlayerHitObstacle -= PushPlayerBack;
     }
 
     private void OnDestroy()

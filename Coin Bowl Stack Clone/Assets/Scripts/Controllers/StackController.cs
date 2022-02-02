@@ -36,6 +36,11 @@ public class StackController : MonoBehaviour
     {
         stack.GetComponent<BowlHandler>().ExchangeCoin();
         DestroyStackedObject(stack);
+
+        if(_stacks.Count == 0)
+        {
+            EventManager.Instance.OnStateLevelEnd();
+        }
     }
 
     #endregion // Exchanging
