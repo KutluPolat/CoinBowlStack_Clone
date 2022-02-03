@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         SubscribeEvents();
+        InitializeLevel();
     }
 
     #endregion // Singleton
@@ -33,10 +34,30 @@ public class LevelManager : MonoBehaviour
 
     public GameState CurrentGameState = GameState.TapToPlay;
 
+    [HideInInspector]
+    public int NumberOfLevels { get { return _levels.Count; } }
+
+    [SerializeField]
+    private List<GameObject> _levels = new List<GameObject>();
+
     [SerializeField]
     private GameStateHandler _gameStateHandler;
 
+    private GameObject _activeLevel;
+
     #endregion // Variables
+
+    #region Update
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetData();
+        }
+    }
+
+    #endregion // Update
 
     #region Methods
 
@@ -44,21 +65,28 @@ public class LevelManager : MonoBehaviour
 
     public void InitializeLevel()
     {
-        if (SceneManager.GetActiveScene().buildIndex != SaveSystem.IndexOfLevelInSceneBuild)
-            ReloadActiveScene();
+        _activeLevel = Instantiate(_levels[SaveSystem.IndexOfLevel]);
     }
 
     private void NextLevel()
     {
         SaveSystem.Level++;
-
-        if (SaveSystem.Level > SceneManager.sceneCountInBuildSettings)
-            SaveSystem.Level = 1;
-
-        SceneManager.LoadScene(SaveSystem.IndexOfLevelInSceneBuild);
+        ReloadActiveScene();
     }
 
-    private void ReloadActiveScene() => SceneManager.LoadScene(SaveSystem.IndexOfLevelInSceneBuild);
+    private void ReloadActiveScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void ResetData()
+    {
+        SaveSystem.Level = 1;
+        SaveSystem.HowManyPrizeOpened = 0;
+        SaveSystem.TotalAssets = 0;
+        SaveSystem.FillRate = 0;
+        ReloadActiveScene();
+    }
 
     #endregion // Scene Management
 

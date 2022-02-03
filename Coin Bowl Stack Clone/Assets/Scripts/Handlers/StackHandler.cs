@@ -35,9 +35,16 @@ public class StackHandler : MonoBehaviour
     {
         if(IsStacked == false)
         {
-            if (other.CompareTag("Stack") || other.CompareTag("Player"))
+            if (other.CompareTag("Player"))
             {
                 EventManager.Instance.OnObjectStacked(gameObject);
+            }
+            else if (other.CompareTag("Stack"))
+            {
+                if (other.GetComponent<StackHandler>().IsStacked)
+                {
+                    EventManager.Instance.OnObjectStacked(gameObject);
+                }
             }
         }
     }

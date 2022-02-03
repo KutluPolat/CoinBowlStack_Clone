@@ -41,7 +41,7 @@ public class StackController : MonoBehaviour
 
         if(_stacks.Count == 0)
         {
-            EventManager.Instance.OnStateLevelEnd();
+            EventManager.Instance.OnStateEndingSequance();
         }
     }
 

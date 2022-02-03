@@ -80,13 +80,15 @@ public class AnimationManager : MonoBehaviour
     private void SubscribeEvents()
     {
         EventManager.Instance.StateTapToPlay += CameraConditionOne;
-        EventManager.Instance.StateLevelEnd += CameraConditionTwo;
+        EventManager.Instance.StateEndingSequance += CameraConditionTwo;
+        EventManager.Instance.StateLevelEnd += CameraConditionOne;
     }
 
     private void UnsubscribeEvents()
     {
         EventManager.Instance.StateTapToPlay -= CameraConditionOne;
-        EventManager.Instance.StateLevelEnd -= CameraConditionTwo;
+        EventManager.Instance.StateEndingSequance -= CameraConditionTwo;
+        EventManager.Instance.StateLevelEnd -= CameraConditionOne;
     }
 
     #endregion // Events

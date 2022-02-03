@@ -36,7 +36,7 @@ public class EventManager : MonoBehaviour
     #region Events
 
     public event Buttons PressedRestart, PressedNextLevel;
-    public event States StateTapToPlay, StateInGame, StateEndingSequance, StateLevelEnd;
+    public event States StateTapToPlay, StateInGame, StateBeginingOfEndingSequance, StateEndingSequance, StateLevelEnd;
     public event InputHandler InputHandled;
     public event Stack ObjectStacked, StackedObjectDestroyed, StackedObjectExchanged;
     public event Hit PlayerHitObstacle;
@@ -116,11 +116,21 @@ public class EventManager : MonoBehaviour
 
     public void OnStateEndingSequance()
     {
-        if (StateEndingSequance != null)
+        if(StateEndingSequance != null)
         {
             StateEndingSequance();
 
             Debug.Log("StateEndingSequance triggered.");
+        }
+    }
+
+    public void OnStateBeginningOfEndingSequance()
+    {
+        if (StateBeginingOfEndingSequance != null)
+        {
+            StateBeginingOfEndingSequance();
+
+            Debug.Log("StateBeginningOfEndingSequance triggered.");
         }
     }
 

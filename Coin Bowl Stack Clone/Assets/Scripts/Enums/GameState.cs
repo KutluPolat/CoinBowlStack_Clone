@@ -4,6 +4,7 @@ namespace Coati.CoinBowlStack.Enums
     {
         TapToPlay,
         InGame,
+        BeginningOfEndingSequance,
         EndingSequance,
         LevelEnd
     }

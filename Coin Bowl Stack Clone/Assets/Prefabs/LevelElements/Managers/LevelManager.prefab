@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentGameState: 0
+  _levels:
+  - {fileID: 2595480611656163845, guid: f578b2162631d374f9c23befa94f8e9c, type: 3}
+  - {fileID: 3635947156994336358, guid: 115c7ff3141137f4ab7969e74b06c42e, type: 3}
+  - {fileID: 5988041979727099529, guid: 2ee35789be6605742ad15a046503b52a, type: 3}
   _gameStateHandler: {fileID: 6330123994325984475, guid: 7aea7f976742d2e4795bcd167a604310, type: 3}

@@ -7,8 +7,8 @@ using DG.Tweening;
 public class MovementController : MonoBehaviour
 {
     #region Variables
-    [SerializeField, Range(0f, 0.3f)]
-    private float _horizontalSpeed = 0.001f, _verticalSpeed = 0.12f;
+    [SerializeField, Range(0f, 0.5f)]
+    private float _horizontalSpeed = 0.2f, _verticalSpeed = 0.12f;
 
     private MovementState CurrentMovementstate = MovementState.Blocked;
 
@@ -45,11 +45,6 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private void MoveToCenter()
-    {
-        GameManager.Instance.Player.transform.DOMoveX(0, 1f);
-    }
-
     private void Move(Vector3 input) => GameManager.Instance.PlayerCharacterController.Move(input);
 
     private void SetMovementStateTo(MovementState state) => CurrentMovementstate = state;
@@ -60,9 +55,7 @@ public class MovementController : MonoBehaviour
 
         EventManager.Instance.StateInGame += () => SetMovementStateTo(MovementState.HorizontalAndForward);
 
-        EventManager.Instance.StateEndingSequance += MoveToCenter;
-
-        EventManager.Instance.StateLevelEnd += () => SetMovementStateTo(MovementState.Blocked);
+        EventManager.Instance.StateEndingSequance += () => SetMovementStateTo(MovementState.Blocked);
 
         EventManager.Instance.InputHandled += MoveHorizontal;
     }
@@ -73,9 +66,7 @@ public class MovementController : MonoBehaviour
 
         EventManager.Instance.StateInGame -= () => SetMovementStateTo(MovementState.HorizontalAndForward);
 
-        EventManager.Instance.StateEndingSequance -= MoveToCenter;
-
-        EventManager.Instance.StateLevelEnd -= () => SetMovementStateTo(MovementState.Blocked);
+        EventManager.Instance.StateEndingSequance -= () => SetMovementStateTo(MovementState.Blocked);
 
         EventManager.Instance.InputHandled -= MoveHorizontal;
     }

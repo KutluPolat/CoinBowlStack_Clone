@@ -8,7 +8,15 @@ public class FinishLineColliderHandler : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            EventManager.Instance.OnStateEndingSequance();
+            if(GameObject.FindGameObjectsWithTag("Stack").Length == 0)
+            {
+                EventManager.Instance.OnStateEndingSequance();
+                EventManager.Instance.OnStateLevelEnd();
+            }
+            else
+            {
+                EventManager.Instance.OnStateBeginningOfEndingSequance();
+            }
         }
     }
 }

@@ -12,10 +12,35 @@ public abstract class SaveSystem : MonoBehaviour
         set { PlayerPrefs.SetInt("Level", value); }
     }
 
-    public static int IndexOfLevelInSceneBuild
+    public static int IndexOfLevel
     {
-        get { return Level - 1; }
+        get { return (Level - 1) % LevelManager.Instance.NumberOfLevels; }
     }
+
+    public static float FillRate
+    {
+        get { return Mathf.Clamp(PlayerPrefs.GetFloat("FillRate"), 0, 2.73f); }
+        set { PlayerPrefs.SetFloat("FillRate", Mathf.Clamp(value, 0, 2.73f)); }
+    }
+
+    public static float TotalAssets
+    {
+        get { return PlayerPrefs.GetFloat("TotalCollectedAssets"); }
+        set { PlayerPrefs.SetFloat("TotalCollectedAssets", value); }
+    }
+
+    public static float EndingPrizePrice
+    {
+        get { return EndingPrizePriceMultiplier + EndingPrizePriceMultiplier * HowManyPrizeOpened; }
+    }
+
+    public static int HowManyPrizeOpened
+    {
+        get { return PlayerPrefs.GetInt("HowManyPrizeOpened"); }
+        set { PlayerPrefs.SetInt("HowManyPrizeOpened", value); }
+    }
+
+    private static float EndingPrizePriceMultiplier = 100;
 
     #endregion // Variables
 

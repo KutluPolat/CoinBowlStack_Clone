@@ -11,6 +11,7 @@ public class GameStateHandler : MonoBehaviour
     {
         EventManager.Instance.StateTapToPlay += () => SetGameStateTo(GameState.TapToPlay);
         EventManager.Instance.StateInGame += () => SetGameStateTo(GameState.InGame);
+        EventManager.Instance.StateBeginingOfEndingSequance += () => SetGameStateTo(GameState.BeginningOfEndingSequance);
         EventManager.Instance.StateEndingSequance += () => SetGameStateTo(GameState.EndingSequance);
         EventManager.Instance.StateLevelEnd += () => SetGameStateTo(GameState.LevelEnd);
     }
@@ -19,6 +20,7 @@ public class GameStateHandler : MonoBehaviour
     {
         EventManager.Instance.StateTapToPlay -= () => SetGameStateTo(GameState.TapToPlay);
         EventManager.Instance.StateInGame -= () => SetGameStateTo(GameState.InGame);
+        EventManager.Instance.StateBeginingOfEndingSequance -= () => SetGameStateTo(GameState.BeginningOfEndingSequance);
         EventManager.Instance.StateEndingSequance -= () => SetGameStateTo(GameState.EndingSequance);
         EventManager.Instance.StateLevelEnd -= () => SetGameStateTo(GameState.LevelEnd);
     }

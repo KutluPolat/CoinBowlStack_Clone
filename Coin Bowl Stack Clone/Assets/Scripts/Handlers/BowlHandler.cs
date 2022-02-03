@@ -126,7 +126,7 @@ public class BowlHandler : MonoBehaviour
 
     public void ExchangeCoin()
     {
-        GameManager.Instance.TotalAsset += _valueOfBowl;
+        GameManager.Instance.TotalAssetInThisLevel += _valueOfBowl;
         UpdateTextsOnValueChanged();
     }
 

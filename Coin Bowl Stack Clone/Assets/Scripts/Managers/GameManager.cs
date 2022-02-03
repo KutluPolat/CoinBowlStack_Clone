@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     #region UI Elements
 
     [HideInInspector]
-    public float CollectedAsset, TotalAsset;
+    public float CollectedAsset, TotalAssetInThisLevel;
 
     #endregion // UI Elements
 
